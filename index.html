@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bean Machine Loyalty Card</title>
+  <style>
+    /* Center everything on the page */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+    }
+
+    .loyalty-card {
+      width: 400px;
+      background-color: #7b431a;
+      border-radius: 10px;
+      padding: 20px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .title {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .name-display {
+      font-size: 24px;
+      padding: 15px 20px;
+      margin-bottom: 30px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      text-align: center;
+      background-color: #7b431a;
+      color: #fff;
+      line-height: 1.5;
+      box-sizing: border-box;
+      outline: none;
+      overflow-wrap: break-word;
+    }
+
+    .name-display[contenteditable="true"]:empty::before {
+      content: "Enter Name";
+      color: white;
+      opacity: 0.6;
+    }
+
+    .checkbox-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-items: center;
+    }
+
+    .checkbox {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: white;
+      border: 2px solid #8B4513;
+      cursor: pointer;
+      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .checkbox.checked {
+      background-color: #B49653; /* Filled color for checked boxes */
+      border: none;
+    }
+
+    .export-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .export-button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="loyalty-card" id="loyaltyCard">
+    <div><img src="https://i.ibb.co/cb7DWGQ/Bean-Machine-Coffee.webp" style="max-width: 100px; padding-bottom: 10px;"/></div>
+    <div class="title"><b>BEAN MACHINE LOYALTY CARD</b></div>
+    <div id="name" class="name-display" contenteditable="true"></div>
+    <div class="checkbox-container">
+      <!-- Div elements acting as checkboxes -->
+      <div class="checkbox" id="point1"></div>
+      <div class="checkbox" id="point2"></div>
+      <div class="checkbox" id="point3"></div>
+      <div class="checkbox" id="point4"></div>
+      <div class="checkbox" id="point5"></div>
+      <div class="checkbox" id="point6"></div>
+      <div class="checkbox" id="point7"></div>
+      <div class="checkbox" id="point8"></div>
+      <div class="checkbox" id="point9"></div>
+      <div class="checkbox" id="point10"></div>
+    </div>
+  </div>
+
+  <button class="export-button" id="exportButton">Export as PNG</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    // Toggle checked state of custom checkboxes
+    document.querySelectorAll('.checkbox').forEach(box => {
+      box.addEventListener('click', () => {
+        box.classList.toggle('checked');
+      });
+    });
+
+    document.getElementById('exportButton').addEventListener('click', function() {
+      const loyaltyCard = document.getElementById('loyaltyCard');
+      const nameInput = document.getElementById('name').innerText.trim(); // Get the entered name
+      const fileName = nameInput ? `${nameInput}_loyalty_card.png` : 'loyalty_card.png'; // Use name or fallback
+
+      html2canvas(loyaltyCard, {
+        scale: 3, // Higher scale for better resolution
+        useCORS: true, // Allow cross-origin images
+        backgroundColor: null, // Ensure proper background rendering
+      }).then(function(canvas) {
+        const link = document.createElement('a');
+        link.download = fileName; // Set the dynamic file name
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(error => {
+        console.error('Error exporting loyalty card:', error);
+        alert('Something went wrong while exporting the card.');
+      });
+    });
+  </script>
+</body>
+</html>
